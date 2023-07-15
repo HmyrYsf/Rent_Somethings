@@ -1,0 +1,35 @@
+﻿@model District
+@{
+    ViewData["Title"] = "Details of the actor";
+}
+<div class="row text">
+    <div class="col-md-8 offset-2">
+        <p>
+            <h1>Details for @Model.DistrictName</h1>
+        </p>
+        <div class="row">
+            <div class="col-md-8 offset-2">
+                
+                    <div class="form-group">
+                        <label asp-for="DistrictName" class="control-label"></label>
+                        <input asp-for="DistrictName" class="form-control" readonly />
+                        <span asp-validation-for="DistrictName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Features" class="control-label"></label>
+                        <input asp-for="Features" class="form-control" readonly/>
+                        <span asp-validation-for="Features" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <a class="btn btn-outline-success float-right" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+                    }
+                    
+                        <a class=" btn btn-outline-secondary" asp-action="Index">Show All</a>
+                    </div>
+               
+            </div>
+        </div>
+    </div>
+</div>

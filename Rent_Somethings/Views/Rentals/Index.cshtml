@@ -1,0 +1,58 @@
+﻿@model List<Rental>
+
+@{
+    ViewData["Title"] = "All Rentals";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <p>
+            <h4>List of all rentals</h4>
+        </p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Rental Id</th>
+                    <th>Items</th>
+                    <th>Total</th>
+                    
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <th>Phone Number</th>
+                        <th>User</th>
+                        
+                    }
+                   
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var rental in Model)
+                {
+                    <tr>
+                        <td class="align-middle">@rental.Id</td>
+                        <td class="align-middle">
+                            <ul style="list-style-type:none">
+                                @foreach (var item in rental.RentalItems)
+                                {
+                                    <li>
+                                        <div class="alert alert-info" role="alert">
+                                            <span class="badge bg-success">@item.Amount</span> [@item.Price.ToString("c")]-@item.Product.Name
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        </td>
+
+                        <td class="align-middle">@rental.RentalItems.Select(m=>m.Product.Price*m.Amount*(m.Product.EndDate.DayOfYear-m.Product.StartDate.DayOfYear)).Sum().ToString("c")</td>
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                        {
+                            <td class="align-middle">@rental.User.PhoneNumber</td>
+                            <td class="align-middle"> @rental.User.FullName </td>
+                        }
+                        
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
